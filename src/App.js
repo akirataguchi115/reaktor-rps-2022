@@ -1,33 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from 'react';
 
-const axios = require('axios')
+const axios = require('axios');
 
 function App() {
-  axios.get('https://bad-api-assignment.reaktor.com/rps/history', {
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  }
-}).then(function (response) {
-  console.log(response)
-})
+  const [result, setResult] = useState('');
+
+  useEffect(() => {
+    axios.get('https://cors-anywhere.herokuapp.com/https://bad-api-assignment.reaktor.com/rps/history', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      const playerA = response.data.data[0].playerA.name;
+      console.log(response.data.data[0].playerA.name);
+      setResult(playerA);
+    });
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {result}
     </div>
   );
 }
